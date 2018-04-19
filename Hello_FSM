@@ -1,0 +1,52 @@
+LIBRARY ieee;
+USE ieee.std_logic_1164.all;
+
+ENTITY Hello_FSM IS
+	port
+		(
+		clk, rst : in std_logic;
+		Hex0, Hex1, Hex2, Hex3, Hex4, Hex5, Hex6, Hex7 : OUT std_logic_vector(6 downto 0)
+		);
+end Hello_FSM;
+
+Architecture struct of Hello_FSM is
+TYPE State_type is (A, B, C, D, E, F, G, H);
+Signal s : State_type;
+Signal clk_mod : integer;
+	
+	signal reg1, reg2, reg3, reg4, reg5, reg6, reg7, reg8 : std_logic_vector( 6 downto 0);
+	
+
+begin
+
+process(clk ,rst)
+begin
+	
+	if (rst='0') then
+		s<= A;
+		reg1 <= "0001001"; reg2 <= "0000110"; reg3 <= "1000111"; reg4<= "1000111"; reg5<= "1000000";
+		reg6<= "1110111"; reg7<= "1110111"; reg8<= "1110111";
+		clk_mod <= 1;
+	elsif(clk' event and clk ='1') then
+		clk_mod <= clk_mod + 1;
+		if(clk_mod = 50000000) then
+				Case s is
+					When A => reg1 <= reg2; reg2 <= reg3; reg3 <= reg4; reg4<= reg5; reg5 <= reg6; reg6 <= reg7; reg7<= reg8; reg8 <= reg1; s <= B;
+					When B => reg1 <= reg2; reg2 <= reg3; reg3 <= reg4; reg4<= reg5; reg5 <= reg6; reg6 <= reg7; reg7<= reg8; reg8 <= reg1; s <= C;
+					When C => reg1 <= reg2; reg2 <= reg3; reg3 <= reg4; reg4<= reg5; reg5 <= reg6; reg6 <= reg7; reg7<= reg8; reg8 <= reg1; s <= D;
+					When D => reg1 <= reg2; reg2 <= reg3; reg3 <= reg4; reg4<= reg5; reg5 <= reg6; reg6 <= reg7; reg7<= reg8; reg8 <= reg1; s <= E;
+					When E => reg1 <= reg2; reg2 <= reg3; reg3 <= reg4; reg4<= reg5; reg5 <= reg6; reg6 <= reg7; reg7<= reg8; reg8 <= reg1; s <= F;
+					When F => reg1 <= reg2; reg2 <= reg3; reg3 <= reg4; reg4<= reg5; reg5 <= reg6; reg6 <= reg7; reg7<= reg8; reg8 <= reg1; s <= G;
+					When G => reg1 <= reg2; reg2 <= reg3; reg3 <= reg4; reg4<= reg5; reg5 <= reg6; reg6 <= reg7; reg7<= reg8; reg8 <= reg1; s <= H;
+					When H => reg1 <= reg2; reg2 <= reg3; reg3 <= reg4; reg4<= reg5; reg5 <= reg6; reg6 <= reg7; reg7<= reg8; reg8 <= reg1; s <= A;
+				end case;
+				clk_mod <= 0;
+		end if;
+	end if;
+	End process;
+	
+	Hex0 <= reg1; Hex1 <= reg2; Hex2 <= reg3; Hex3 <= reg4; Hex4 <= reg5; Hex5 <= reg6; Hex6 <= reg7; Hex7 <= reg8;
+
+	end struct;
+
+		
