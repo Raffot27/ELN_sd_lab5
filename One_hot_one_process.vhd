@@ -18,6 +18,7 @@ port(   D, clk, Set, reset: in std_logic;
 end component;
 
 
+
 signal nxt_st, cnt_st: std_logic_vector(8 downto 0);
 signal Clock, w, resetn, z, a, b: std_logic;
 begin 
@@ -28,6 +29,7 @@ B_st : D_flipflop port map (nxt_st(1), Clock, '1' , resetn, cnt_st(1), a);
 State : for i in 2 to 8 generate 
    DFF: D_flipflop port map (nxt_st(i), Clock, '1' , resetn , cnt_st(i));
 end generate;
+
 
 nxt_st(0) <= '1';
 nxt_st(1) <= (not w) and ( b or cnt_st(5) or cnt_st(6) or cnt_st(7) or cnt_st(8));
