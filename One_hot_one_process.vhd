@@ -18,7 +18,6 @@ port(   D, clk, Set, reset: in std_logic;
 end component;
 
 
-
 signal nxt_st, cnt_st: std_logic_vector(8 downto 0);
 signal Clock, w, resetn, z, a, b: std_logic;
 begin 
