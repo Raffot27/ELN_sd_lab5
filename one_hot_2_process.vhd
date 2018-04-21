@@ -42,7 +42,7 @@ process(w, s_present)
 					 else s_next<=E;
 					 end if; 
 					 
-	   when F => y<="000010000";
+	   when F => y<="000100000";
 					 if w='1' then s_next<=G; 					 
 					 else s_next<=B; 
 					 end if; 
