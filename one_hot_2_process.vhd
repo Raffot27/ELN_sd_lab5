@@ -33,7 +33,7 @@ process(w, s_present)
 					 else s_next<=F; 
 					 end if;
 					 
-		when D => y<="000001000";
+		when D => y<="000001000"; 
 					 if w='0' then s_next<=E; 
 					 else s_next<=F; 
 					 end if; 
