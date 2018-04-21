@@ -1,6 +1,7 @@
 library ieee;
 use ieee.std_logic_1164.all;
 
+
 entity Moore_One_Hot is 
 port(KEY : in std_logic_vector(0 downto 0); 
       SW : in std_logic_vector(1 downto 0);
@@ -11,36 +12,49 @@ end Moore_One_Hot;
 architecture behav of Moore_One_Hot is
 
 component D_flipflop
-port(D, clk, Set, reset: in std_logic;
-        Q: out std_logic);
+port(   D, clk, Set, reset: in std_logic;
+        Q: out std_logic;
+		   f: out std_logic);
 end component;
 
 
-signal y, S : std_logic_vector(8 downto 0);
-signal Clock, w, resetn, z : std_logic;
 
+signal nxt_st, cnt_st: std_logic_vector(8 downto 0);
+signal Clock, w, resetn, z, a, b: std_logic;
 begin 
-Tot_0 : D_flipflop port map (y(0), Clock, Clock, resetn, S(0));
-Tot : for i in 1 to 8 generate 
-   DFF: D_flipflop port map (y(i), Clock, Clock, resetn , S(i));
-end generate;
+--b <= not (a);
 
+A_st : D_flipflop port map (a, Clock, '0', resetn, cnt_st(0));
+--Tot : for i in 1 to 8 generate 
+   --DFF: D_flipflop port map (y(i), Clock, , resetn , S(i));
+--end generate;
+B_st : D_flipflop port map (nxt_st(1), Clock, '1' , resetn, cnt_st(1), a);
+C_st : D_flipflop port map (nxt_st(2), Clock, '1', resetn, cnt_st(2));
+D_st : D_flipflop port map (nxt_st(3), Clock, '1', resetn, cnt_st(3));
+E_st : D_flipflop port map (nxt_st(4), Clock, '1', resetn, cnt_st(4));
+F_st : D_flipflop port map (nxt_st(5), Clock, '1', resetn, cnt_st(5));
+G_st : D_flipflop port map (nxt_st(6), Clock, '1', resetn, cnt_st(6));
+H_st : D_flipflop port map (nxt_st(7), Clock, '1', resetn, cnt_st(7));
+I_st : D_flipflop port map (nxt_st(8), Clock, '1', resetn, cnt_st(8));
 --process(Resetn, Clock, S, w)
 --begin 
-y(0) <= '0';
-y(1) <= (not w) and (S(0) or S(5) or S(6) or S(7) or S(8));
-y(2) <= S(1) and (not w);
-y(3) <= S(2) and (not w);
-y(4) <= (not w) and (S(3) or S(4));
-y(5) <= w and (S(0) or S(1) or S(2) or S(3) or S(4));
-y(6) <= S(5) and w;
-y(7) <= S(6) and w;
-y(8) <= w and (S(7) or S(8));
-z <= (S(8) or S(4));
+nxt_st(0) <= '0';
+nxt_st(1) <= (not w) and (cnt_st(0) or cnt_st(5) or cnt_st(6) or cnt_st(7) or cnt_st(8));
+nxt_st(2) <= cnt_st(1) and (not w);
+nxt_st(3) <= cnt_st(2) and (not w);
+nxt_st(4) <= (not w) and (cnt_st(3) or cnt_st(4));
+nxt_st(5) <= w and (cnt_st(0) or cnt_st(1) or cnt_st(2) or cnt_st(3) or cnt_st(4));
+nxt_st(6) <= cnt_st(5) and w;
+nxt_st(7) <= cnt_st(6) and w;
+nxt_st(8) <= w and (cnt_st(7) or cnt_st(8));
+z <= (cnt_st(8) or cnt_st(4));
+
+
 --end process;
 resetn <= SW(0);
 w <= SW(1);
 Clock <= KEY(0);
 LEDG(0) <= z;
-LEDR <= S;
+
+LEDR <= cnt_st;
 end behav;
