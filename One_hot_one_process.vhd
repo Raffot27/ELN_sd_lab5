@@ -22,35 +22,26 @@ end component;
 signal nxt_st, cnt_st: std_logic_vector(8 downto 0);
 signal Clock, w, resetn, z, a, b: std_logic;
 begin 
---b <= not (a);
+cnt_st(0) <= not(b);
 
-A_st : D_flipflop port map (a, Clock, '0', resetn, cnt_st(0));
---Tot : for i in 1 to 8 generate 
-   --DFF: D_flipflop port map (y(i), Clock, , resetn , S(i));
---end generate;
+A_st : D_flipflop port map (a, Clock, '0', resetn, b);
 B_st : D_flipflop port map (nxt_st(1), Clock, '1' , resetn, cnt_st(1), a);
-C_st : D_flipflop port map (nxt_st(2), Clock, '1', resetn, cnt_st(2));
-D_st : D_flipflop port map (nxt_st(3), Clock, '1', resetn, cnt_st(3));
-E_st : D_flipflop port map (nxt_st(4), Clock, '1', resetn, cnt_st(4));
-F_st : D_flipflop port map (nxt_st(5), Clock, '1', resetn, cnt_st(5));
-G_st : D_flipflop port map (nxt_st(6), Clock, '1', resetn, cnt_st(6));
-H_st : D_flipflop port map (nxt_st(7), Clock, '1', resetn, cnt_st(7));
-I_st : D_flipflop port map (nxt_st(8), Clock, '1', resetn, cnt_st(8));
---process(Resetn, Clock, S, w)
---begin 
-nxt_st(0) <= '0';
-nxt_st(1) <= (not w) and (cnt_st(0) or cnt_st(5) or cnt_st(6) or cnt_st(7) or cnt_st(8));
+State : for i in 2 to 8 generate 
+   DFF: D_flipflop port map (nxt_st(i), Clock, '1' , resetn , cnt_st(i));
+end generate;
+
+
+nxt_st(0) <= '1';
+nxt_st(1) <= (not w) and ( b or cnt_st(5) or cnt_st(6) or cnt_st(7) or cnt_st(8));
 nxt_st(2) <= cnt_st(1) and (not w);
 nxt_st(3) <= cnt_st(2) and (not w);
 nxt_st(4) <= (not w) and (cnt_st(3) or cnt_st(4));
-nxt_st(5) <= w and (cnt_st(0) or cnt_st(1) or cnt_st(2) or cnt_st(3) or cnt_st(4));
+nxt_st(5) <= w and ( b or cnt_st(1) or cnt_st(2) or cnt_st(3) or cnt_st(4));
 nxt_st(6) <= cnt_st(5) and w;
 nxt_st(7) <= cnt_st(6) and w;
 nxt_st(8) <= w and (cnt_st(7) or cnt_st(8));
 z <= (cnt_st(8) or cnt_st(4));
 
-
---end process;
 resetn <= SW(0);
 w <= SW(1);
 Clock <= KEY(0);
