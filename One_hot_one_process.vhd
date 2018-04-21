@@ -29,7 +29,6 @@ State : for i in 2 to 8 generate
    DFF: D_flipflop port map (nxt_st(i), Clock, '1' , resetn , cnt_st(i));
 end generate;
 
-
 nxt_st(0) <= '1';
 nxt_st(1) <= (not w) and ( b or cnt_st(5) or cnt_st(6) or cnt_st(7) or cnt_st(8));
 nxt_st(2) <= cnt_st(1) and (not w);
