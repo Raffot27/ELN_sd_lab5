@@ -28,4 +28,4 @@ begin
 		  end process;
 		  --temp <= D;
 f <= cnt;
-end behavior;
+end behavior; 
