@@ -46,6 +46,6 @@ resetn <= SW(0);
 w <= SW(1);
 Clock <= KEY(0);
 LEDG(0) <= z;
-
+ 
 LEDR <= cnt_st;
 end behav;
